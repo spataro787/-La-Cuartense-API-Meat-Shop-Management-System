@@ -1,226 +1,170 @@
-# MiniBlog API
+# 🥩 La Cuartense API — Meat Shop Management System
 
-API REST para gestionar autores y publicaciones, desarrollada con Node.js, Express y PostgreSQL.
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)
+![Vitest](https://img.shields.io/badge/Vitest-6E9F18?style=for-the-badge&logo=vitest&logoColor=white)
 
-## Funcionalidades
+API RESTful backend desarrollada para **Carnicería La Cuartense**, orientada a la gestión integral de productos cárnicos, cortes, listas de precios y control de stock.
 
-- CRUD de autores y publicaciones.
-- Consulta de publicaciones por autor.
-- Validación de campos e IDs.
-- Consultas SQL parametrizadas.
-- Documentación interactiva con Swagger.
-- Scripts para preparar la base y cargar ejemplos.
-- Pruebas con Vitest.
+El sistema permite administrar el catálogo de productos, organizar la información comercial y gestionar el inventario mediante una base de datos relacional PostgreSQL.
 
-## Tecnologías
+Implementa una arquitectura por capas, consultas SQL parametrizadas, validación de datos, documentación interactiva con OpenAPI/Swagger y pruebas automatizadas de integración.
 
-Node.js, Express, PostgreSQL, node-postgres, express-validator, Swagger y Vitest.
+## 📌 Funcionalidades principales
 
-## Requisitos
+- **Gestión de productos cárnicos:** operaciones CRUD para administrar cortes de carne y productos del catálogo.
+- **Gestión de precios:** administración de precios de los productos para mantener actualizada la información comercial.
+- **Control de stock:** gestión del inventario y disponibilidad de productos.
+- **Persistencia relacional:** almacenamiento y organización de datos mediante PostgreSQL.
+- **Seguridad de datos:** consultas SQL parametrizadas para prevenir inyecciones SQL.
+- **Validación de entradas:** control y validación de datos recibidos mediante `express-validator`.
+- **Documentación interactiva:** endpoints y esquemas documentados con OpenAPI/Swagger.
+- **Testing:** pruebas automatizadas de integración con Vitest y Supertest.
+- **Inicialización de datos:** scripts para creación y carga segura de información en la base de datos.
 
-- Node.js y npm. Proyecto probado con Node.js 24.
-- PostgreSQL en ejecución.
+## 🏗️ Arquitectura del proyecto
+
+El backend está organizado bajo una arquitectura por capas, separando responsabilidades para facilitar el mantenimiento, la escalabilidad y la reutilización del código.
+
+```text
+la-cuartense-api/
+├── src/
+│   ├── controllers/      # Controladores HTTP y lógica de respuesta
+│   ├── db/               # Conexión y verificación de PostgreSQL
+│   ├── middleware/       # Validaciones y manejo de errores
+│   ├── models/           # Acceso a datos y consultas SQL
+│   ├── routes/           # Definición de endpoints y Swagger
+│   ├── scripts/          # Inicialización y carga segura de datos
+│   ├── app.js            # Configuración de Express
+│   └── server.js         # Punto de entrada del servidor
+└── tests/                # Pruebas unitarias y de integración
+```
+
+## 🛠️ Tecnologías utilizadas
+
+| Tecnología | Aplicación |
+|---|---|
+| Node.js | Entorno de ejecución |
+| Express | Desarrollo de API REST |
+| PostgreSQL | Base de datos relacional |
+| node-postgres (pg) | Conexión con PostgreSQL |
+| express-validator | Validación de datos |
+| Swagger / OpenAPI | Documentación de endpoints |
+| Vitest | Pruebas automatizadas |
+| Supertest | Pruebas de integración HTTP |
+| Git / GitHub | Control de versiones |
+
+## 💻 Requisitos del sistema
+
+- Node.js v18 o superior.
+- PostgreSQL instalado y en ejecución.
 - Git.
 
-## Instalación local
+## ⚙️ Instalación y configuración
+
+### 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/spataro787/miniblog-api.git
-cd miniblog-api
+git clone https://github.com/spataro787/la-cuartense-api.git
+
+cd la-cuartense-api
+```
+
+### 2. Instalar dependencias
+
+```bash
 npm install
 ```
 
-Copiá el archivo de configuración de ejemplo. En Git Bash:
+### 3. Configurar variables de entorno
+
+Copiar el archivo `.env.example` y crear un archivo `.env`:
 
 ```bash
 cp .env.example .env
 ```
 
-Configurá `.env` con tus credenciales locales:
+Configurar las credenciales de PostgreSQL:
 
 ```env
-DATABASE_URL="postgresql://postgres:TU_PASSWORD@127.0.0.1:5432/miniblog-api"
+DATABASE_URL="postgresql://postgres:TU_PASSWORD@127.0.0.1:5432/la-cuartense"
 PORT=3000
 NODE_ENV=development
 ```
 
-Reemplazá `TU_PASSWORD` por tu contraseña y ajustá el puerto si corresponde.
-Los caracteres especiales de la contraseña deben codificarse para usarlos
-en la URL. No subas `.env` al repositorio.
+### 4. Inicializar la base de datos
 
-## Preparar la base de datos
-
-Para crear la base si no existe, preparar las tablas y cargar ejemplos:
+Crear la base de datos y cargar los datos iniciales:
 
 ```bash
 node src/scripts/create-and-seed.js
 ```
 
-Este script está preparado para PostgreSQL local. El usuario necesita
-permiso para crear bases de datos si la base todavía no existe.
-
-Si la base ya existe y solo querés preparar su estructura:
-
-```bash
-node init-db.js
-```
-
-Para cargar únicamente los ejemplos en una base ya preparada:
-
-```bash
-node src/scripts/seed-safe.js
-```
-
-La carga de ejemplos evita repetir autores por email y publicaciones
-por título y autor. No elimina registros existentes.
-
-## Comprobar la conexión
+### 5. Verificar la conexión
 
 ```bash
 node src/db/test-db.js
 ```
 
-Si la conexión funciona, muestra `✅ CONEXIÓN OK` y la fecha del servidor.
+## ▶️ Ejecución de la API
 
-## Iniciar la API
-
-Durante el desarrollo:
+Modo desarrollo:
 
 ```bash
 npm run dev
 ```
 
-Nodemon reinicia el servidor al guardar cambios.
-
-Para iniciar sin Nodemon:
+Modo producción:
 
 ```bash
 npm start
 ```
 
-Con `PORT=3000`, la API está disponible en:
+**Acceso local:**
 
+```text
 http://localhost:3000
+```
 
-PostgreSQL y el servidor Node.js deben estar en ejecución.
-No es necesario mantener pgAdmin abierto.
+## 📖 Documentación Swagger
 
-## Pruebas
+Con el servidor iniciado, acceder a la documentación interactiva:
 
-Ejecutar los tests una vez:
+```text
+http://localhost:3000/api-docs
+```
+
+Swagger UI permite consultar los endpoints disponibles, visualizar sus esquemas y probar las solicitudes HTTP.
+
+## 🧪 Pruebas automatizadas
+
+El proyecto incorpora pruebas automatizadas para verificar el funcionamiento de los componentes y endpoints de la API.
+
+Ejecutar la suite de pruebas:
 
 ```bash
 npm test -- --run
 ```
 
-Ejecutarlos en modo interactivo:
+Modo interactivo:
 
 ```bash
 npm test
 ```
 
-## Documentación
+## 🎯 Objetivo del desarrollo
 
-Con la API iniciada, abrí:
+Desarrollar una solución backend para un negocio del rubro cárnico, centralizando la administración de productos, precios y stock mediante una API RESTful.
 
-http://localhost:3000/api-docs
+El proyecto permitió aplicar conocimientos de desarrollo backend, modelado de bases de datos relacionales, consultas SQL, validaciones, documentación de servicios y testing automatizado en un contexto de aplicación real.
 
-La documentación interactiva se genera desde los comentarios Swagger
-de los archivos de rutas.
+## 👨‍💻 Desarrollador
 
-El proyecto también contiene documentación en `docs/`.
-Para ejecutar el generador de documentación:
+**Agustín Spataro**  
+Backend & Full Stack Developer
 
-```bash
-npm run generate-docs
-```
-
-## Endpoints
-
-| Método | Ruta | Función |
-|---|---|---|
-| GET | `/authors` | Listar autores |
-| GET | `/authors/:id` | Consultar un autor |
-| POST | `/authors` | Crear un autor |
-| PUT | `/authors/:id` | Editar un autor |
-| DELETE | `/authors/:id` | Eliminar un autor |
-| GET | `/posts` | Listar publicaciones |
-| GET | `/posts/:id` | Consultar una publicación |
-| GET | `/posts/author/:authorId` | Consultar publicaciones de un autor |
-| POST | `/posts` | Crear una publicación |
-| PUT | `/posts/:id` | Editar una publicación |
-| DELETE | `/posts/:id` | Eliminar una publicación |
-| GET | `/test` | Comprobar la conexión con PostgreSQL |
-
-## Ejemplos
-
-Crear un autor con `POST /authors`:
-
-```json
-{
-  "name": "Autor de ejemplo",
-  "email": "autor@example.com",
-  "bio": "Descripción del autor"
-}
-```
-
-Crear una publicación con `POST /posts`:
-
-```json
-{
-  "title": "Mi publicación",
-  "content": "Contenido de ejemplo",
-  "author_id": 1,
-  "published": true
-}
-```
-
-Reemplazá `author_id` por el ID de un autor existente.
-
-Para editar un autor, enviá nombre y email.
-Para editar una publicación, podés enviar los campos que querés cambiar.
-`published` debe ser un booleano JSON: `true` o `false`.
-
-## Estructura
-
-| Ubicación | Función |
-|---|---|
-| `src/routes/` | Rutas y validaciones |
-| `src/controllers/` | Coordinación de peticiones y respuestas |
-| `src/models/` | Consultas SQL |
-| `src/db/` | Conexión y prueba de PostgreSQL |
-| `src/middleware/` | Manejo de errores |
-| `src/scripts/` | Preparación y carga de la base |
-| `src/services/setup.sql` | Tablas y ajustes del esquema |
-| `src/services/seed.sql` | Datos de ejemplo |
-| `tests/` | Pruebas automáticas |
-| `src/app.js` | Configuración de Express |
-| `src/server.js` | Inicio del servidor |
-
-El esquema incluye `authors`, `posts` y `comments`.
-La API actual expone autores y publicaciones; comentarios no tiene endpoints.
-
-Eliminar un autor también elimina sus publicaciones y los comentarios
-relacionados, según las relaciones `ON DELETE CASCADE` del esquema.
-
-## Seguridad y alcance
-
-- Validación de entradas con express-validator.
-- Consultas parametrizadas en los modelos.
-- Credenciales configuradas mediante variables de entorno.
-- `.env` excluido de Git.
-
-CORS está habilitado y no reemplaza la autenticación.
-La API actual no incluye autenticación ni control de permisos.
-
-## Despliegue
-
-La versión local fue comprobada.
-La reactivación del despliegue en Railway está pendiente.
-
-## Autor
-
-Agustín Spataro
-
-- GitHub: https://github.com/spataro787
-- LinkedIn: https://www.linkedin.com/in/agustin-spataro-dev/
+- 🌐 [Portfolio](https://agustin-spataro.vercel.app/)
+- 💼 [LinkedIn](https://www.linkedin.com/in/agustin-spataro-dev/)
+- 💻 [GitHub](https://github.com/spataro787)
